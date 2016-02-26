@@ -19,6 +19,7 @@
     "ds-redis-crud": "0.1.9",
     "ds-server": "1.2.11",
     "epoch-to-timeago": "1.0.1",
-    "word-count": "0.2.1"
+    "word-count": "0.2.1",
+    "socket.io": "1.4.4"
   }
 }
