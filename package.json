@@ -1,0 +1,24 @@
+{
+  "name": "ds-lab-meta",
+  "version": "1.0.0",
+  "engines": {
+    "node": "4.3.1"
+  },
+  "description": "Meta data for Dansk Supermarked Digital Lab",
+  "main": "app.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DanskSupermarked/ds-digital-lab-meta-api.git"
+  },
+  "author": "Jakob Viskum Damgaard",
+  "license": "ISC",
+  "dependencies": {
+    "ds-redis-crud": "0.1.9",
+    "ds-server": "1.2.11",
+    "epoch-to-timeago": "1.0.1",
+    "word-count": "0.2.1"
+  }
+}
