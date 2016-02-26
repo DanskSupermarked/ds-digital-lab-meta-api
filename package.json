@@ -2,7 +2,7 @@
   "name": "ds-lab-meta",
   "version": "1.0.0",
   "engines": {
-    "node": "4.3.0"
+    "node": "4.2.4"
   },
   "description": "Meta data for Dansk Supermarked Digital Lab",
   "main": "app.js",
