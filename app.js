@@ -3,6 +3,7 @@ var DSServer = require('ds-server');
 var RedisCRUD = require('ds-redis-crud');
 var timeAgo = require('epoch-to-timeago').timeAgo;
 var wordCount = require('word-count');
+var keepAlive = require('./util/keep-alive');
 
 var crud = new RedisCRUD({
   schema: require('./schema/meta'),
@@ -78,3 +79,5 @@ app.use(function(req, res, next) {
 });
 
 server.listen();
+
+keepAlive('https://ds-digital-lab.azurewebsites.net/');
