@@ -1,8 +1,6 @@
 // Dependencies
 var DSServer = require('ds-server');
 var RedisCRUD = require('ds-redis-crud');
-var timeAgo = require('epoch-to-timeago').timeAgo;
-var wordCount = require('word-count');
 var keepAlive = require('./util/keep-alive');
 
 var crud = new RedisCRUD({
@@ -24,20 +22,11 @@ var server = new DSServer({
 
 var app = server.app;
 
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Authorization, Content-Type, Accept-Ranges, X-Request-URL');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  next();
-});
+app.use(require('./middlewares/add-cors-headers'));
+app.use(require('./middlewares/allow-options-requests'));
+app.use(require('./middlewares/email-to-gravatar'));
 
-app.use(function(req, res, next) {
-  if (req.method.toUpperCase() === 'OPTIONS') {
-    return res.send(204);
-  }
-  next();
-});
+app.get('/search', require('./middlewares/search'));
 
 crud.createRESTInterface(app, {
   get: true,
@@ -46,37 +35,7 @@ crud.createRESTInterface(app, {
   delete: true
 });
 
-app.use(function(req, res, next) {
-  if (req.payload && req.payload.responses && req.query.raw === undefined) {
-
-    var now = Date.now();
-    req.payload.responses.forEach(function(response) {
-
-      // Time ago
-      var published = new Date(response.published).getTime();
-      response.timeAgo = timeAgo(published, now);
-
-      // Read time and excerpt
-      var spaces = Array(41).join(' ');
-      var textWithSpaces = response.text.replace(/\r?\n/g, spaces);
-      if (textWithSpaces.length > 300) {
-        var spacePlacement = textWithSpaces.indexOf(' ', 300);
-        response.excerpt = textWithSpaces.substr(0, spacePlacement) + '...';
-        response.excerpt = response.excerpt.replace(new RegExp(spaces, 'g'), '\n');
-
-        response.readTime = Math.ceil(wordCount(response.text) / 300);
-        if (response.readTime > 1) {
-          response.readTime += ' mins';
-        } else {
-          response.readTime += ' min';
-        }
-      }
-    });
-  }
-
-  next();
-
-});
+app.use(require('./middlewares/enhance-responses'));
 
 server.listen();
 
