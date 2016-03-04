@@ -45,6 +45,10 @@ module.exports = {
     },
     likes: {
       type: 'integer'
+    },
+    authorEmail: {
+      type: 'string',
+      format: 'email'
     }
   },
   required: [
