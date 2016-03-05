@@ -1,6 +1,8 @@
 var sendMail = require('../util/send-mail');
 var getData = require('../util/get-data-from-ghost-api');
 
+var ghostURL = process.env.GHOST_URL || 'http://localhost:3000';
+
 module.exports = function(req, res, next) {
   next();
 
@@ -11,6 +13,7 @@ module.exports = function(req, res, next) {
     return;
   }
 
+  var authorEmail = req.payload.authorEmail;
   var responses = req.payload.responses;
   var latestResponse = responses[responses.length - 1];
 
@@ -20,7 +23,7 @@ module.exports = function(req, res, next) {
   }
 
   getData('posts', {
-    filter: 'uuid:' + latestResponse.id
+    filter: 'uuid:' + req.payload.id
   }, function(err, posts) {
 
     if (err || posts.length === 0) {
@@ -30,9 +33,9 @@ module.exports = function(req, res, next) {
     var post = posts[0];
 
     sendMail({
-      to: req.payload.authorMail,
+      to: authorEmail,
       subject: 'New response to your article "' + post.title + '"',
-      message: latestResponse.text + '\n\n' + '/ ' + latestResponse.name + '\n\n<a href="https://ds-digital-lab.azurewebsites.net' + post.url + '">https://ds-digital-lab.azurewebsites.net' + post.url + '</a>'
+      html: '<p>' + latestResponse.text + '<br><br>' + '/ ' + latestResponse.name + '<br><br><a href="' + ghostURL + post.url + '">' + ghostURL + post.url + '</a></p>'
     });
   });
 

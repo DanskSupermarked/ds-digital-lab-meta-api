@@ -40,4 +40,6 @@ app.put('/', require('./middlewares/email-on-new-responses'));
 
 server.listen();
 
-keepAlive('https://ds-digital-lab.azurewebsites.net/');
+if (process.env.NODE_ENV === 'production' && process.env.GHOST_URL) {
+  keepAlive(process.env.GHOST_URL);
+}

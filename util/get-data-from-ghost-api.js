@@ -1,8 +1,9 @@
 var request = require('request');
 
 // Constants
-const BASE_URL = 'https://ds-digital-lab.azurewebsites.net/ghost/api/v0.1/';
-const CLIENT_SECRET = '7712f3f90b54';
+const GHOST_URL = process.env.GHOST_URL || 'http://localhost:3000';
+const BASE_URL = GHOST_URL + '/ghost/api/v0.1/';
+const CLIENT_SECRET = process.env.GHOST_CLIENT_SECRET || '18ba571f60c7';
 
 module.exports = function(resource, qs, callback) {
   callback = callback || function() {};
