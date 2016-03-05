@@ -16,7 +16,7 @@ module.exports = function(data) {
     return console.log('Sending mail', data);
   }
 
-  mailgun.messages().send(data, function(error, body) {
+  mailServer.messages().send(data, function(error, body) {
     if (error) {
       return console.error(error);
     }
