@@ -1,5 +1,17 @@
 var sendMail = require('../util/send-mail');
 var getData = require('../util/get-data-from-ghost-api');
+var marked = require('marked');
+
+var renderer = new marked.Renderer();
+
+renderer.heading = function(text, level) {
+  return '<p class="h' + level + '"">' + text + '</p>';
+};
+
+marked.setOptions({
+  renderer: renderer,
+  sanitize: true
+});
 
 var ghostURL = process.env.GHOST_URL || 'http://localhost:3000';
 
@@ -35,7 +47,7 @@ module.exports = function(req, res, next) {
     sendMail({
       to: authorEmail,
       subject: 'New response to your article "' + post.title + '"',
-      html: '<p>' + latestResponse.text + '<br><br>' + '/ ' + latestResponse.name + '<br><br><a href="' + ghostURL + post.url + '">' + ghostURL + post.url + '</a></p>'
+      html: marked(latestResponse.text) + '<p>' + '/ ' + latestResponse.name + '</p><p><a href="' + ghostURL + post.url + '">' + ghostURL + post.url + '</a></p>'
     });
   });
 
