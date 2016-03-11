@@ -10,7 +10,7 @@ if (process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN) {
 }
 
 module.exports = function(data) {
-  data.from = 'Danks Supermarked Digital Lab <ghost@ds-digital-lab.azurewebsites.net>';
+  data.from = 'Dansk Supermarked Digital Lab <ghost@ds-digital-lab.azurewebsites.net>';
 
   if (!mailServer) {
     return console.log('Sending mail', data);
