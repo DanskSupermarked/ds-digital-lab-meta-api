@@ -31,6 +31,7 @@ var updatePostsIndex = function() {
     include: 'author,tags'
   }, function(err, posts) {
     if (err) {
+      console.log(err);
       return;
     }
     posts.forEach(function(post) {
@@ -51,6 +52,7 @@ var updatePostsIndex = function() {
 var updateTagsIndex = function() {
   getData('tags', {}, function(err, tags) {
     if (err) {
+      console.log(err);
       return;
     }
 
@@ -70,6 +72,7 @@ var updateTagsIndex = function() {
 var updateUsersIndex = function() {
   getData('users', {}, function(err, users) {
     if (err) {
+      console.log(err);
       return;
     }
 
