@@ -1,7 +1,6 @@
 // Dependencies
 var DSServer = require('ds-server');
 var RedisCRUD = require('ds-redis-crud');
-var keepAlive = require('./util/keep-alive');
 
 var crud = new RedisCRUD({
   schema: require('./schema/meta'),
@@ -40,7 +39,3 @@ app.put('/', require('./middlewares/email-on-new-responses'));
 app.put('/', require('./middlewares/email-on-like'));
 
 server.listen();
-
-if (process.env.NODE_ENV === 'production' && process.env.GHOST_URL) {
-  keepAlive(process.env.GHOST_URL);
-}
