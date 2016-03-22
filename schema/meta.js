@@ -4,15 +4,15 @@ module.exports = {
   properties: {
     id: {
       type: 'string',
-      format: 'uuid'
+      format: 'uuid',
     },
     created: {
       type: 'string',
-      format: 'datetime'
+      format: 'datetime',
     },
     modified: {
       type: 'string',
-      format: 'datetime'
+      format: 'datetime',
     },
     responses: {
       type: 'array',
@@ -20,40 +20,40 @@ module.exports = {
         type: 'object',
         properties: {
           name: {
-            type: 'string'
+            type: 'string',
           },
           image: {
-            type: 'string'
+            type: 'string',
           },
           website: {
-            type: 'string'
+            type: 'string',
           },
           text: {
-            type: 'string'
+            type: 'string',
           },
           published: {
             type: 'string',
-            format: 'datetime'
-          }
+            format: 'datetime',
+          },
         },
         required: [
           'name',
           'text',
-          'published'
-        ]
-      }
+          'published',
+        ],
+      },
     },
     likes: {
-      type: 'integer'
+      type: 'integer',
     },
     authorEmail: {
       type: 'string',
-      format: 'email'
-    }
+      format: 'email',
+    },
   },
   required: [
     'id',
     'responses',
-    'likes'
-  ]
+    'likes',
+  ],
 };

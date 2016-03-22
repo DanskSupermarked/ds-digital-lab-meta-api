@@ -4,20 +4,20 @@
  */
 
 // Dependenceis
-var getData = require('../util/get-data-from-ghost-api');
-var lunr = require('lunr');
-var striptags = require('striptags');
+const getData = require('../util/get-data-from-ghost-api');
+const lunr = require('lunr');
+const striptags = require('striptags');
 
 // Structure the indexing
-var index = lunr(function() {
+const index = lunr(function lunrSettings() {
   this.field('title', {
-    boost: 10
+    boost: 10,
   });
   this.field('tags', {
-    boost: 5
+    boost: 5,
   });
   this.field('author', {
-    boost: 5
+    boost: 5,
   });
   this.field('body');
   this.ref('ref');
@@ -26,21 +26,21 @@ var index = lunr(function() {
 /**
  * Add all posts to the search index
  */
-var updatePostsIndex = function() {
+const updatePostsIndex = () => {
   getData('posts', {
-    include: 'author,tags'
-  }, function(err, posts) {
+    include: 'author,tags',
+  }, (err, posts) => {
     if (err) {
       console.log(err);
       return;
     }
-    posts.forEach(function(post) {
+    posts.forEach(post => {
       index.add({
         title: post.title,
         body: striptags(post.html),
         author: post.author.name,
         tags: post.tags.map(tag => tag.name).join(', '),
-        ref: 'posts/' + post.id
+        ref: `posts/${post.id}`,
       });
     });
   });
@@ -49,18 +49,18 @@ var updatePostsIndex = function() {
 /**
  * Add all tags to the search index
  */
-var updateTagsIndex = function() {
-  getData('tags', {}, function(err, tags) {
+const updateTagsIndex = () => {
+  getData('tags', {}, (err, tags) => {
     if (err) {
       console.log(err);
       return;
     }
 
-    tags.forEach(function(tag) {
+    tags.forEach(tag => {
       index.add({
         title: tag.name,
         body: striptags(tag.description),
-        ref: 'tags/' + tag.id
+        ref: `tags/${tag.id}`,
       });
     });
   });
@@ -69,18 +69,18 @@ var updateTagsIndex = function() {
 /**
  * Add all users to the search index
  */
-var updateUsersIndex = function() {
-  getData('users', {}, function(err, users) {
+const updateUsersIndex = () => {
+  getData('users', {}, (err, users) => {
     if (err) {
       console.log(err);
       return;
     }
 
-    users.forEach(function(user) {
+    users.forEach(user => {
       index.add({
         title: user.name,
         body: striptags(user.description),
-        ref: 'users/' + user.id
+        ref: `users/${user.id}`,
       });
     });
   });
@@ -89,7 +89,7 @@ var updateUsersIndex = function() {
 /**
  * Update the index wit all data
  */
-var updateIndex = function() {
+const updateIndex = () => {
   updatePostsIndex();
   updateTagsIndex();
   updateUsersIndex();
@@ -100,7 +100,7 @@ updateIndex();
 setInterval(updateIndex, 1 * 60 * 60 * 1000);
 
 // Search results as a endpoint
-module.exports = function(req, res, next) {
+module.exports = function search(req, res, next) {
   req.payload = index.search(req.query.q);
   next();
 };

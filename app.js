@@ -1,25 +1,23 @@
 // Dependencies
-var DSServer = require('ds-server');
-var RedisCRUD = require('ds-redis-crud');
+const DSServer = require('ds-server');
+const RedisCRUD = require('ds-redis-crud');
 
-var crud = new RedisCRUD({
+const crud = new RedisCRUD({
   schema: require('./schema/meta'),
   redisHost: process.env.REDIS_HOST,
   redisKey: process.env.REDIS_KEY,
-  dbIndex: process.env.REDIS_DB_INDEX || 1
+  dbIndex: process.env.REDIS_DB_INDEX || 1,
 });
 
-//////////////////
-// Setup server //
-//////////////////
+// Setup server
 
-var server = new DSServer({
+const server = new DSServer({
   port: '3021',
   websocket: false,
-  parseError: true
+  parseError: true,
 });
 
-var app = server.app;
+const app = server.app;
 
 app.use(require('./middlewares/add-cors-headers'));
 app.use(require('./middlewares/allow-options-requests'));
@@ -31,7 +29,7 @@ crud.createRESTInterface(app, {
   get: true,
   post: true,
   put: true,
-  delete: true
+  delete: true,
 });
 
 app.use(require('./middlewares/enhance-responses'));
