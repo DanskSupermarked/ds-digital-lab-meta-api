@@ -2,40 +2,36 @@
  * Add read-time and time-ago to all responses for easier use in frontend.
  */
 
-var timeAgo = require('epoch-to-timeago').timeAgo;
-var wordCount = require('word-count');
-var marked = require('marked');
+const timeAgo = require('epoch-to-timeago').timeAgo;
+const wordCount = require('word-count');
+const marked = require('marked');
 
-var renderer = new marked.Renderer();
+const renderer = new marked.Renderer();
 
-renderer.heading = function(text, level) {
-  return '<p class="h' + level + '"">' + text + '</p>';
-};
+renderer.heading = (text, level) => `<p class="h${level}">${text}</p>`;
 
 marked.setOptions({
-  renderer: renderer,
-  sanitize: true
+  renderer,
+  sanitize: true,
 });
 
-module.exports = function(req, res, next) {
+module.exports = function enhanceResponses(req, res, next) {
   if (req.payload && req.payload.responses && req.query.raw === undefined) {
-
-    var now = Date.now();
-    req.payload.responses.forEach(function(response) {
-
+    const now = Date.now();
+    req.payload.responses.forEach(response => {
       // Time ago
-      var published = new Date(response.published).getTime();
+      const published = new Date(response.published).getTime();
       response.timeAgo = timeAgo(published, now);
 
       // Markdown to html
       response.html = marked(response.text);
 
       // Read time and excerpt
-      var spaces = Array(41).join(' ');
-      var textWithSpaces = response.text.replace(/\r?\n/g, spaces);
+      const spaces = Array(41).join(' ');
+      const textWithSpaces = response.text.replace(/\r?\n/g, spaces);
       if (textWithSpaces.length > 300) {
-        var spacePlacement = textWithSpaces.indexOf(' ', 300);
-        response.excerpt = textWithSpaces.substr(0, spacePlacement) + '...';
+        const spacePlacement = textWithSpaces.indexOf(' ', 300);
+        response.excerpt = `${textWithSpaces.substr(0, spacePlacement)}...`;
         response.excerpt = response.excerpt.replace(new RegExp(spaces, 'g'), '\n');
 
         response.excerpt = marked(response.excerpt);
@@ -47,10 +43,8 @@ module.exports = function(req, res, next) {
           response.readTime += ' min';
         }
       }
-
     });
   }
 
   next();
-
 };
