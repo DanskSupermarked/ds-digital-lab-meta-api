@@ -14,7 +14,6 @@ const crud = new RedisCRUD({
 const server = new DSServer({
   port: '3021',
   websocket: false,
-  parseError: true,
 });
 
 const app = server.app;
