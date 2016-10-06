@@ -1,8 +1,8 @@
 {
   "name": "ds-lab-meta",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
-    "node": "4.4.0"
+    "node": "6.7.*"
   },
   "description": "Meta data for Dansk Supermarked Digital Lab",
   "main": "app.js",
@@ -17,17 +17,17 @@
   "license": "ISC",
   "dependencies": {
     "ds-redis-crud": "0.1.9",
-    "ds-server": "1.2.14",
+    "ds-server": "2.1.0",
     "epoch-to-timeago": "1.0.1",
-    "lunr": "0.7.0",
-    "mailgun-js": "0.7.7",
-    "marked": "0.3.5",
-    "md5": "2.1.0",
-    "pac-resolver": "1.2.1",
-    "request": "2.69.0",
-    "socket.io": "1.4.4",
+    "lunr": "0.7.1",
+    "mailgun-js": "0.7.12",
+    "marked": "0.3.6",
+    "md5": "2.2.1",
+    "pac-resolver": "1.3.0",
+    "request": "2.75.0",
+    "socket.io": "1.4.8",
     "striptags": "2.1.1",
-    "word-count": "0.2.1",
-    "yargs": "3.27.0"
+    "word-count": "0.2.2",
+    "yargs": "6.0.0"
   }
 }
