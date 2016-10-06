@@ -34,5 +34,6 @@ crud.createRESTInterface(app, {
 app.use(require('./middlewares/enhance-responses'));
 app.put('/', require('./middlewares/email-on-new-responses'));
 app.put('/', require('./middlewares/email-on-like'));
+app.use(require('./middlewares/transform-to-ds-server-v2'));
 
 server.listen();
